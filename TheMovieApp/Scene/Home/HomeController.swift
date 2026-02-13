@@ -18,6 +18,8 @@ class HomeController: BaseController {
         collection.dataSource = self
         collection.delegate = self
         collection.backgroundColor = .clear
+        collection.showsHorizontalScrollIndicator = false
+        collection.showsVerticalScrollIndicator = false
         collection.showsVerticalScrollIndicator = false
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.register(HomeCell.self, forCellWithReuseIdentifier: "HomeCell")
