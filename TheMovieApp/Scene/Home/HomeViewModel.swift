@@ -14,66 +14,37 @@ struct HomeModel {
 }
 
 class HomeViewModel {
-    
     var items = [HomeModel]()
-    var manager = CoreManager()
+
+    private var useCase: HomeUseCase
+    init(useCase: HomeUseCase) {
+        self.useCase = useCase
+    }
     
     var succes: (() -> Void)?
     var error: ((String) -> Void)?
     
     
     func getMovies() {
-        getNowPlayingMovies()
-        getPopularMovies()
-        getTopRatedMovies()
-        getUpcomigMovies()
+        getMovieItems(endpoint: HomeEndpoint.nowPlaying.rawValue, title: "Now Playing")
+        getMovieItems(endpoint: HomeEndpoint.popular.rawValue, title: "Popular")
+        getMovieItems(endpoint: HomeEndpoint.topRated.rawValue, title: "Top Rated")
+        getMovieItems(endpoint: HomeEndpoint.upComing.rawValue, title: "Upcoming")
     }
     
-    private func getNowPlayingMovies() {
-        manager.request(model: Movie.self, endpoint: .nowPlaying) { data, erroMessage in
+    func getMovieItems(endpoint: String, title: String) {
+        useCase.getHomeItems(endpoint: endpoint) { data, erroMessage in
             if let erroMessage {
                 self.error?(erroMessage)
             } else if let data {
-                self.items.append(.init(title: "Now Playing", items: data.results ?? []))
-                print(self.items)
-                self.succes?()
-            }
-        }
-    }
-    
-    private func getPopularMovies() {
-        manager.request(model: Movie.self, endpoint: .popular) { data, erroMessage in
-            if let erroMessage {
-                self.error?(erroMessage)
-            } else if let data {
-                self.items.append(.init(title: "Popular", items: data.results ?? []))
-                print(self.items)
-                self.succes?()
-            }
-        }
-    }
-    
-    private func getTopRatedMovies() {
-        manager.request(model: Movie.self, endpoint: .topRated) { data, erroMessage in
-            if let erroMessage {
-                self.error?(erroMessage)
-            } else if let data {
-                self.items.append(.init(title: "Top Rated", items: data.results ?? []))
-                print(self.items)
-                self.succes?()
-            }
-        }
-    }
-    
-    private func getUpcomigMovies() {
-        manager.request(model: Movie.self, endpoint: .upComing) { data, erroMessage in
-            if let erroMessage {
-                self.error?(erroMessage)
-            } else if let data {
-                self.items.append(.init(title: "Upcoming", items: data.results ?? []))
+                self.items.append(.init(title: title, items: data.results ?? [] ))
                 print(self.items)
                 self.succes?()
             }
         }
     }
 }
+        
+        
+    
+

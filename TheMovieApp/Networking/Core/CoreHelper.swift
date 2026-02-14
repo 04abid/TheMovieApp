@@ -9,12 +9,7 @@ import Foundation
 import Alamofire
 
 
-enum Endpoint: String,CaseIterable {
-    case nowPlaying = "movie/now_playing"
-    case popular = "movie/popular"
-    case topRated = "movie/top_rated"
-    case upComing = "movie/upcoming"
-}
+
 
 class CoreHelper {
     static let shared = CoreHelper()
@@ -29,9 +24,11 @@ class CoreHelper {
     ]
     
     
-    func configureURL(endpoint: Endpoint) -> String {
-        baseURL + version + "/" + endpoint.rawValue
+    func configureURL(endpoint: String) -> String {
+        baseURL + version + "/" + endpoint
     }
+    
+ 
     
     func configureImageURL(path: String) -> String {
         baseImageURL + path

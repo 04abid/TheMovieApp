@@ -34,8 +34,18 @@ class HomeController: BaseController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    private let viewModel = HomeViewModel()
-
+//    private let viewModel = HomeViewModel()
+    
+    private let viewModel: HomeViewModel
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @MainActor required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -84,8 +94,13 @@ extension HomeController:collectionConfiguration {
         let maxOffset: CGFloat = 50
         
         let progress = min(max(offset / maxOffset, 0), 1)
-        let xOffset = -(view.bounds.width / 4) * progress
+        let xOffset = -(view.bounds.width / 3) * progress
         
         titleLabel.transform = CGAffineTransform(translationX: xOffset, y: 0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let controller = MovieDetailController()
+        navigationController?.show(controller, sender: nil)
     }
 }

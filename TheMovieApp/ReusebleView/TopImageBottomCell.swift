@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol TopImageBottomProtocol {
+    var titleText: String {get}
+    var imageName: String {get}
+}
+
 class TopImageBottomCell: UICollectionViewCell {
     static let identity = "TopImageBottomCell"
     
@@ -21,7 +26,7 @@ class TopImageBottomCell: UICollectionViewCell {
     lazy var topImage: UIImageView = {
        let image = UIImageView()
         image.contentMode = .scaleAspectFill
-        image.layer.cornerRadius = 16
+        image.layer.cornerRadius = 24
         image.clipsToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
        return image
@@ -53,8 +58,8 @@ class TopImageBottomCell: UICollectionViewCell {
         ])
     }
     
-    func configure(items: MovieResult) {
-        title.text = items.originalTitle
-        topImage.loadURL(data: items.posterPath ?? "")
+    func configure(data: TopImageBottomProtocol) {
+        title.text = data.titleText
+        topImage.loadURL(data: data.imageName)
     }
 }

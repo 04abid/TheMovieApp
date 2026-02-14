@@ -9,11 +9,10 @@ import Foundation
 import Alamofire
 
 class CoreManager {
-    
     func request<T:Codable>(model: T.Type,
                             method:HTTPMethod = .get,
                             parameters: Parameters? = nil,
-                            endpoint: Endpoint,
+                            endpoint: String,
                             compleation: @escaping((T?,String?) -> Void)) {
         let url = CoreHelper.shared.configureURL(endpoint: endpoint)
         let header = CoreHelper.shared.headers
@@ -26,6 +25,7 @@ class CoreManager {
             case .success(let data):
                 do {
                     let result = try JSONDecoder().decode(T.self, from: data)
+//                    let result = try JSONDecoder().decode(CoreModel<T>.self, from: data)
                     compleation(result,nil)
                 } catch {
                     compleation(nil,error.localizedDescription)
